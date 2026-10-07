@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venta - Librería Armonía</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="venta.css">
+</head>
+<body>
+
+    <header class="venta-header">
+        <div class="venta-header-left">
+            <i class="fas fa-store"></i>
+            <span>Librería Armonía</span>
+        </div>
+        <div class="venta-header-right">
+            <span id="vendedoraNombre">Vendedora</span>
+            <button class="btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+    </header>
+
+    <!-- ===== VISTA 1: CATÁLOGO ===== -->
+    <main id="vistaCatalogo" class="vista">
+        <div class="search-bar-pos">
+            <i class="fas fa-search"></i>
+            <input type="text" id="buscarProducto" placeholder="Buscar por nombre o marca...">
+        </div>
+
+        <div id="productosGrid" class="productos-grid">
+            <p class="text-muted">Cargando productos...</p>
+        </div>
+    </main>
+
+    <!-- Barra flotante del carrito -->
+    <div id="carritoBar" class="carrito-bar oculto">
+        <div class="carrito-info">
+            <span id="carritoCantidad">0 productos</span>
+            <strong id="carritoTotal">Bs. 0.00</strong>
+        </div>
+        <button class="btn-ver-orden" onclick="mostrarVistaOrden()">
+            Ver orden <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- ===== VISTA 2: ORDEN DE VENTA ===== -->
+    <main id="vistaOrden" class="vista oculto">
+        <div class="orden-header">
+            <button class="btn-volver" onclick="mostrarVistaCatalogo()"><i class="fas fa-arrow-left"></i> Seguir agregando</button>
+            <h2>Orden de venta</h2>
+        </div>
+
+        <div id="ordenItems" class="orden-items"></div>
+
+        <div class="orden-total">
+            <span>Total a pagar</span>
+            <strong id="ordenTotalMonto">Bs. 0.00</strong>
+        </div>
+
+        <div class="metodo-pago-selector">
+            <button class="btn-metodo" id="btnEfectivo" onclick="seleccionarMetodoPago('efectivo')">
+                <i class="fas fa-money-bill-wave"></i> Efectivo
+            </button>
+            <button class="btn-metodo" id="btnQr" onclick="seleccionarMetodoPago('qr')">
+                <i class="fas fa-qrcode"></i> Pago QR
+            </button>
+        </div>
+
+        <!-- Panel EFECTIVO -->
+        <div id="panelEfectivo" class="panel-pago oculto">
+            <p>¿Con cuánto paga el cliente?</p>
+            <div class="montos-rapidos">
+                <button onclick="setMontoRecibido(5)">5 Bs</button>
+                <button onclick="setMontoRecibido(10)">10 Bs</button>
+                <button onclick="setMontoRecibido(20)">20 Bs</button>
+                <button onclick="setMontoRecibido(50)">50 Bs</button>
+                <button onclick="setMontoRecibido(100)">100 Bs</button>
+            </div>
+            <div class="monto-otro">
+                <label>Otro monto:</label>
+                <input type="number" id="inputMontoOtro" min="0" step="0.5" oninput="setMontoRecibido(this.value)">
+            </div>
+            <div class="resultado-cambio">
+                <span>Recibido: <strong id="montoRecibidoTexto">Bs. 0.00</strong></span>
+                <span>Cambio: <strong id="cambioTexto">Bs. 0.00</strong></span>
+            </div>
+        </div>
+
+        <!-- Panel QR -->
+        <div id="panelQr" class="panel-pago oculto">
+            <p>Muestra este QR al cliente para que realice el pago:</p>
+            <img id="qrImagen" src="" alt="QR de pago" class="qr-imagen">
+            <label class="confirmar-pago-check">
+                <input type="checkbox" id="checkPagoQrConfirmado">
+                Confirmo que el cliente realizó el pago
+            </label>
+        </div>
+
+        <button class="btn-registrar-venta" id="btnRegistrarVenta" onclick="registrarVenta()" disabled>
+            <i class="fas fa-check-circle"></i> Registrar venta
+        </button>
+    </main>
+
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Procesando...</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        const SUPABASE_Url = 'https://gzfsojbuqucxarshunec.supabase.co'
+        const SUPABASE_Key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6ZnNvamJ1cXVjeGFyc2h1bmVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzOTEzODEsImV4cCI6MjEwNDk2NzM4MX0.qL5kBIOuiybOeeQjHeZYJeZtfYqth3PurARISDLUBI4'
+        const db = window.supabase.createClient(SUPABASE_Url, SUPABASE_Key)
+    </script>
+    <script src="venta.js"></script>
+</body>
+</html>

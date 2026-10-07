@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel - Librería Armonía</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <img src="img/logo-armonia.png" alt="Logo Librería Armonía" class="logo-img">
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="nav-item active">
+                    <a href="#" class="nav-link" data-section="dashboard">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-roles="Administrador">
+                    <a href="#" class="nav-link" data-section="productos">
+                        <i class="fas fa-box"></i>
+                        <span>Productos</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-roles="Administrador">
+                    <a href="#" class="nav-link" data-section="marcas">
+                        <i class="fas fa-copyright"></i>
+                        <span>Marcas</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-roles="Administrador">
+                    <a href="#" class="nav-link" data-section="categorias">
+                        <i class="fas fa-tags"></i>
+                        <span>Categorías</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-roles="Administrador">
+                    <a href="#" class="nav-link" data-section="proveedores">
+                        <i class="fas fa-truck"></i>
+                        <span>Proveedores</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-roles="Administrador,Encargado de Compras">
+                    <a href="#" class="nav-link" data-section="compras">
+                        <i class="fas fa-dolly"></i>
+                        <span>Compras</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-roles="Administrador">
+                    <a href="#" class="nav-link" data-section="ventas">
+                        <i class="fas fa-cash-register"></i>
+                        <span>Ventas</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-roles="Administrador">
+                    <a href="#" class="nav-link" data-section="clientes">
+                        <i class="fas fa-users"></i>
+                        <span>Clientes</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-roles="Administrador">
+                    <a href="#" class="nav-link" data-section="usuarios">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Usuarios</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-roles="Administrador">
+                    <a href="#" class="nav-link" data-section="configuracion">
+                        <i class="fas fa-qrcode"></i>
+                        <span>Configuración</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header class="main-header">
+            <div class="header-left">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 id="pageTitle">Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="user-menu" id="userMenu">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span class="user-name" id="userName">Usuario</span>
+                    <span class="user-role" id="userRole" style="font-size:0.75rem;opacity:0.7;margin-left:4px;"></span>
+                    <i class="fas fa-chevron-down"></i>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="content-area">
+
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="dashboard-grid">
+                    <div class="stats-grid">
+                        <div class="stat-card blue">
+                            <div class="stat-icon"><i class="fas fa-box"></i></div>
+                            <div class="stat-info">
+                                <h3 id="statProductos">0</h3>
+                                <p>Total Productos</p>
+                            </div>
+                        </div>
+                        <div class="stat-card orange">
+                            <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="stat-info">
+                                <h3 id="statStockBajo">0</h3>
+                                <p>Stock Bajo</p>
+                            </div>
+                        </div>
+                        <div class="stat-card green">
+                            <div class="stat-icon"><i class="fas fa-cash-register"></i></div>
+                            <div class="stat-info">
+                                <h3 id="statVentasHoy">Bs. 0</h3>
+                                <p>Ventas de Hoy</p>
+                            </div>
+                        </div>
+                        <div class="stat-card purple">
+                            <div class="stat-icon"><i class="fas fa-dolly"></i></div>
+                            <div class="stat-info">
+                                <h3 id="statComprasMes">Bs. 0</h3>
+                                <p>Compras del Mes</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions-section">
+                        <h3><i class="fas fa-bolt"></i> Acciones Rápidas</h3>
+                        <div class="quick-actions-grid">
+                            <button class="quick-action-btn" onclick="showModal('addProductoModal')" data-roles="Administrador">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Nuevo Producto</span>
+                            </button>
+                            <button class="quick-action-btn" onclick="showModal('addCompraModal')" data-roles="Administrador,Encargado de Compras">
+                                <i class="fas fa-dolly"></i>
+                                <span>Registrar Compra</span>
+                            </button>
+                            <button class="quick-action-btn" onclick="showModal('addClienteModal')" data-roles="Administrador">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Nuevo Cliente</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="alert-card">
+                        <h3><i class="fas fa-exclamation-circle"></i> Productos con Stock Bajo</h3>
+                        <div id="stockBajoList" class="alert-list">
+                            <p class="text-muted">Cargando...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Productos Section -->
+            <section id="productos-section" class="content-section">
+                <div class="section-header">
+                    <h2>Gestión de Productos</h2>
+                    <button class="primary-btn" onclick="showModal('addProductoModal')">
+                        <i class="fas fa-plus"></i> Nuevo Producto
+                    </button>
+                </div>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchProducto" placeholder="Buscar producto por nombre o marca...">
+                </div>
+                <div id="productosContent"></div>
+            </section>
+
+            <!-- Marcas Section -->
+            <section id="marcas-section" class="content-section">
+                <div class="section-header">
+                    <h2>Marcas</h2>
+                    <button class="primary-btn" onclick="showModal('addMarcaModal')">
+                        <i class="fas fa-plus"></i> Nueva Marca
+                    </button>
+                </div>
+                <div id="marcasContent"></div>
+            </section>
+
+            <!-- Categorías Section -->
+            <section id="categorias-section" class="content-section">
+                <div class="section-header">
+                    <h2>Categorías de Productos</h2>
+                    <button class="primary-btn" onclick="showModal('addCategoriaModal')">
+                        <i class="fas fa-plus"></i> Nueva Categoría
+                    </button>
+                </div>
+                <div id="categoriasContent"></div>
+            </section>
+
+            <!-- Proveedores Section -->
+            <section id="proveedores-section" class="content-section">
+                <div class="section-header">
+                    <h2>Gestión de Proveedores</h2>
+                    <button class="primary-btn" onclick="showModal('addProveedorModal')">
+                        <i class="fas fa-plus"></i> Nuevo Proveedor
+                    </button>
+                </div>
+                <div id="proveedoresContent"></div>
+            </section>
+
+            <!-- Compras Section -->
+            <section id="compras-section" class="content-section">
+                <div class="section-header">
+                    <h2>Registro de Compras</h2>
+                    <button class="primary-btn" onclick="showModal('addCompraModal')">
+                        <i class="fas fa-plus"></i> Nueva Compra
+                    </button>
+                </div>
+                <div id="comprasContent"></div>
+            </section>
+
+            <!-- Ventas Section (solo lectura; el registro real es en venta.html) -->
+            <section id="ventas-section" class="content-section">
+                <div class="section-header">
+                    <h2>Historial de Ventas</h2>
+                </div>
+                <p class="text-muted" style="margin-bottom:1rem;">Las ventas se registran desde la interfaz simplificada de venta (venta.html). Aquí solo se visualizan.</p>
+                <div id="ventasContent"></div>
+            </section>
+
+            <!-- Clientes Section -->
+            <section id="clientes-section" class="content-section">
+                <div class="section-header">
+                    <h2>Gestión de Clientes</h2>
+                    <button class="primary-btn" onclick="showModal('addClienteModal')">
+                        <i class="fas fa-plus"></i> Nuevo Cliente
+                    </button>
+                </div>
+                <div id="clientesContent"></div>
+            </section>
+
+            <!-- Usuarios Section -->
+            <section id="usuarios-section" class="content-section">
+                <div class="section-header">
+                    <h2>Gestión de Usuarios</h2>
+                    <button class="primary-btn" onclick="showModal('addUsuarioModal')">
+                        <i class="fas fa-plus"></i> Nuevo Usuario
+                    </button>
+                </div>
+                <div id="usuariosContent"></div>
+            </section>
+
+            <!-- Configuración Section -->
+            <section id="configuracion-section" class="content-section">
+                <div class="section-header">
+                    <h2>Configuración del Negocio</h2>
+                </div>
+                <form id="configForm" class="modal-form" style="max-width:500px;">
+                    <div class="form-group">
+                        <label>Nombre del negocio</label>
+                        <input type="text" name="nombre_negocio" id="configNombre" placeholder="Librería Armonía">
+                    </div>
+                    <div class="form-group">
+                        <label>URL del QR de pago</label>
+                        <input type="text" name="qr_pago_url" id="configQr" placeholder="https://...">
+                        <small class="text-muted">Sube la imagen del QR a Supabase Storage y pega aquí su URL pública.</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="primary-btn"><i class="fas fa-save"></i> Guardar</button>
+                    </div>
+                </form>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ================= MODALES ================= -->
+
+    <!-- Modal Producto -->
+    <div class="modal" id="addProductoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-box"></i> Nuevo Producto</h3>
+                <button class="close-modal" onclick="closeModal('addProductoModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="productoForm" class="modal-form">
+                <div class="form-group">
+                    <label>Nombre del Producto *</label>
+                    <input type="text" name="nombre_producto" required placeholder="Ej: Cuaderno universitario 100 hojas">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoría *</label>
+                        <select name="id_categoria" id="selectCategoria" required>
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Marca</label>
+                        <select name="id_marca" id="selectMarca">
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Proveedor</label>
+                        <select name="id_proveedor" id="selectProveedor">
+                            <option value="">Seleccionar...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Unidad de medida</label>
+                        <select name="unidad_medida">
+                            <option value="unidad">Unidad</option>
+                            <option value="paquete">Paquete</option>
+                            <option value="caja">Caja</option>
+                            <option value="docena">Docena</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Precio de Costo (Bs.) *</label>
+                        <input type="number" name="precio_costo" step="0.01" min="0" required placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Precio de Venta (Bs.) *</label>
+                        <input type="number" name="precio_venta" step="0.01" min="0" required placeholder="0.00">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Stock Actual *</label>
+                        <input type="number" name="stock_actual" min="0" required placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Mínimo</label>
+                        <input type="number" name="stock_minimo" min="0" placeholder="5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Imagen del producto</label>
+                    <input type="file" name="imagen" id="productoImagenInput" accept="image/*">
+                    <small class="text-muted">Se sube a Supabase Storage al guardar.</small>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea name="descripcion" rows="2" placeholder="Detalles adicionales..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="secondary-btn" onclick="closeModal('addProductoModal')">Cancelar</button>
+                    <button type="submit" class="primary-btn"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Marca -->
+    <div class="modal" id="addMarcaModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h3><i class="fas fa-copyright"></i> Nueva Marca</h3>
+                <button class="close-modal" onclick="closeModal('addMarcaModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="marcaForm" class="modal-form">
+                <div class="form-group">
+                    <label>Nombre de la Marca *</label>
+                    <input type="text" name="nombre_marca" required placeholder="Ej: Faber Castell">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="secondary-btn" onclick="closeModal('addMarcaModal')">Cancelar</button>
+                    <button type="submit" class="primary-btn"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Categoría -->
+    <div class="modal" id="addCategoriaModal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h3><i class="fas fa-tags"></i> Nueva Categoría</h3>
+                <button class="close-modal" onclick="closeModal('addCategoriaModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="categoriaForm" class="modal-form">
+                <div class="form-group">
+                    <label>Nombre de la Categoría *</label>
+                    <input type="text" name="nombre_categoria" required placeholder="Ej: Cuadernos y Hojas">
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <textarea name="descripcion" rows="2" placeholder="Descripción de la categoría..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="secondary-btn" onclick="closeModal('addCategoriaModal')">Cancelar</button>
+                    <button type="submit" class="primary-btn"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Proveedor -->
+    <div class="modal" id="addProveedorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-truck"></i> Nuevo Proveedor</h3>
+                <button class="close-modal" onclick="closeModal('addProveedorModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="proveedorForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre / Empresa *</label>
+                        <input type="text" name="nombre_proveedor" required placeholder="Nombre del proveedor">
+                    </div>
+                    <div class="form-group">
+                        <label>NIT</label>
+                        <input type="text" name="nit" placeholder="Número tributario">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="text" name="telefono" placeholder="Número de contacto">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" name="correo_electronico" placeholder="correo@ejemplo.com">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Contacto / Representante</label>
+                    <input type="text" name="contacto" placeholder="Nombre del representante">
+                </div>
+                <div class="form-group">
+                    <label>Dirección</label>
+                    <input type="text" name="direccion" placeholder="Dirección del proveedor">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="secondary-btn" onclick="closeModal('addProveedorModal')">Cancelar</button>
+                    <button type="submit" class="primary-btn"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Compra -->
+    <div class="modal" id="addCompraModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-dolly"></i> Registrar Compra</h3>
+                <button class="close-modal" onclick="closeModal('addCompraModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="compraForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Proveedor *</label>
+                        <select name="id_proveedor" id="selectProveedorCompra" required>
+                            <option value="">Seleccionar proveedor...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Compra *</label>
+                        <input type="date" name="fecha_compra" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Producto *</label>
+                        <select name="id_producto" id="selectProductoCompra" required>
+                            <option value="">Seleccionar producto...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad *</label>
+                        <input type="number" name="cantidad" min="1" required placeholder="0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Precio Unitario (Bs.) *</label>
+                        <input type="number" name="precio_unitario" step="0.01" min="0" required placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Número de Factura</label>
+                        <input type="text" name="numero_factura" placeholder="Ej: FAC-0001">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Observaciones</label>
+                    <textarea name="observaciones" rows="2" placeholder="Notas adicionales..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="secondary-btn" onclick="closeModal('addCompraModal')">Cancelar</button>
+                    <button type="submit" class="primary-btn"><i class="fas fa-save"></i> Registrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Cliente -->
+    <div class="modal" id="addClienteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> Nuevo Cliente</h3>
+                <button class="close-modal" onclick="closeModal('addClienteModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="clienteForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombres *</label>
+                        <input type="text" name="nombres" required placeholder="Nombres">
+                    </div>
+                    <div class="form-group">
+                        <label>Apellidos</label>
+                        <input type="text" name="apellidos" placeholder="Apellidos">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="text" name="telefono" placeholder="Número de contacto">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico</label>
+                        <input type="email" name="correo_electronico" placeholder="correo@ejemplo.com">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="secondary-btn" onclick="closeModal('addClienteModal')">Cancelar</button>
+                    <button type="submit" class="primary-btn"><i class="fas fa-save"></i> Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Usuario (crea cuentas vía Edge Function create-user) -->
+    <div class="modal" id="addUsuarioModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-shield"></i> Nuevo Usuario</h3>
+                <button class="close-modal" onclick="closeModal('addUsuarioModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="usuarioForm" class="modal-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombres *</label>
+                        <input type="text" name="nombres" required placeholder="Nombres">
+                    </div>
+                    <div class="form-group">
+                        <label>Apellidos *</label>
+                        <input type="text" name="apellidos" required placeholder="Apellidos">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nombre de Usuario *</label>
+                        <input type="text" name="nombre_usuario" required placeholder="usuario123">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo Electrónico *</label>
+                        <input type="email" name="correo_electronico" required placeholder="correo@ejemplo.com">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Contraseña *</label>
+                        <input type="password" name="password" required placeholder="Mínimo 6 caracteres" minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label>Rol *</label>
+                        <select name="id_rol" required>
+                            <option value="">Seleccionar...</option>
+                            <option value="1">Administrador</option>
+                            <option value="2">Encargado de Compras</option>
+                            <option value="3">Vendedor</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="secondary-btn" onclick="closeModal('addUsuarioModal')">Cancelar</button>
+                    <button type="submit" class="primary-btn"><i class="fas fa-save"></i> Crear Usuario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // ⚠️ REEMPLAZA CON TUS CREDENCIALES DE SUPABASE
+        const SUPABASE_Url = 'https://gzfsojbuqucxarshunec.supabase.co'
+        const SUPABASE_Key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd6ZnNvamJ1cXVjeGFyc2h1bmVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkzOTEzODEsImV4cCI6MjEwNDk2NzM4MX0.qL5kBIOuiybOeeQjHeZYJeZtfYqth3PurARISDLUBI4'
+        const db = window.supabase.createClient(SUPABASE_Url, SUPABASE_Key)
+
+        // URL de la Edge Function para crear usuarios (mismo proyecto)
+        const CREATE_USER_FN_URL = `${SUPABASE_Url}/functions/v1/create-user`;
+    </script>
+    <script src="dashboard.js"></script>
+    <script src="modales.js"></script>
+</body>
+</html>
